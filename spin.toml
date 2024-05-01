@@ -1,0 +1,29 @@
+spin_manifest_version = 2
+
+[application]
+authors = ["Justin Pflueger <justin.pflueger@fermyon.com>"]
+description = ""
+name = "testy-test"
+version = "0.1.0"
+
+[variables]
+password = { default = "password" }
+
+[application.trigger.mqtt]
+address = "mqtt://localhost:1883"
+username = "user"
+password = "{{ password }}"
+keep_alive_interval = "30"
+
+[[trigger.mqtt]]
+id = "trigger-testy-test"
+component = "testy-test"
+topic = "messages-in01"
+qos = "1"
+
+[component.testy-test]
+source = "target/testy-test.wasm"
+exclude_files = ["**/node_modules"]
+[component.testy-test.build]
+command = "npm run build"
+watch = ["src/**/*.ts", "package.json"]
